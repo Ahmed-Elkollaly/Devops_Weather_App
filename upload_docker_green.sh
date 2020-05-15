@@ -5,14 +5,14 @@
 
 # Step 1:
 # Create dockerpath
-dockerpath="2121994/weather_app_blue"
+dockerpath="2121994/weather_app_green"
 
 # Step 2:  
 # Authenticate & tag
 echo "Docker ID and Image: $dockerpath"
 docker login --username=2121994
-docker tag b627c2dec336 2121994/weather_app_blue
+docker tag d1c7575f723d 2121994/weather_app_green
 
 # Step 3:
 # Push image to a docker repository
-docker push 2121994/weather_app_blue
+docker push 2121994/weather_app_green
