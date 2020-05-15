@@ -8,10 +8,11 @@ pipeline {
     stages {
         stage('Build Docker Images') {
             steps {
-                script {
-                    docker.build blueRegistry + ":$BUILD_NUMBER"
-                    docker.build greenRegistry + ":$BUILD_NUMBER"
-                }
+                  sh 'docker build -t 2121994/weather_app_blue -f Devops_Weather_App/blue/Dockerfile'
+15
+                  sh 'docker build -t 2121994/weather_app_green -f Devops_Weather_App/green/Dockerfile'
+16
+                
             }
         }
 	    stage('Lint HTML') {
