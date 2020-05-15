@@ -3,19 +3,41 @@ pipeline {
     blueRegistry = "2121994/weather_app_blue"
     greenRegistry = "2121994/weather_app_green"
     registryCredential = 'dockerhub'
+    blueDockerImage = ''
+    greenDockerImage = ''
+
     }
     agent any
     stages {
-        stage('Build Docker Images') {
+        
+        stage('Lintting') {
             steps {
-                sh 'docker build -t 2121994/weather_app_blue -f Devops_Weather_App/blue/Dockerfile .'
-                sh 'docker build -t 2121994/weather_app_green -f Devops_Weather_App/green/Dockerfile .'
-                
+                sh 'hadolint Dockerfile'
             }
         }
-	    stage('Lint HTML') {
-            steps {
-                sh 'tidy -q -e *.html'
+        stage('Build Docker Images') {
+            steps{
+                script {
+                    blueDockerImage = docker.build blueRegistry + ":$BUILD_NUMBER"
+                    greenDockerImage = docker.build greenRegistry + ":$BUILD_NUMBER"
+                }
+            }
+        }
+        stage('Deploy Image') {
+            steps{
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                        blueDockerImage.push()
+                        greenDockerImage.push()
+                    
+                    }
+                }
+            }
+        }
+        stage('Remove Unused docker image') {
+            steps{
+                sh "docker rmi $blueRegistry:$BUILD_NUMBER"
+                sh "docker rmi $greenRegistry:$BUILD_NUMBER"
             }
         }
     }
