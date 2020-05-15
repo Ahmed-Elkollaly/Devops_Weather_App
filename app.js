@@ -21,7 +21,7 @@ app.post('/weather',(req,res) => {
                 
                     
                 const response = {
-                    place_name,
+                    address: place_name,
                     temperature,
                     summary
                 }
