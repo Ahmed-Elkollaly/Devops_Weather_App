@@ -9,17 +9,12 @@ pipeline {
     agent any
     stages {
         
-<<<<<<< HEAD
          
         stage('Create the kubernetes cluster') {
-=======
-        stage('Creating Resources') {
->>>>>>> 5950003753efe1317fadfd6e887dcccddd7bb3c3
             when {
                 branch 'resource-creation'  
             }
             steps {
-<<<<<<< HEAD
                 withAWS(region:'us-east-2', credentials:'Aws') {
 					sh '''
 						eksctl create cluster --name weather-cluster --version 1.13 \
@@ -58,13 +53,6 @@ pipeline {
                     branch 'resource-creation'
                 }
             }
-=======
-                sh 'hadolint Dockerfile'
-            }
-
-        }
-        stage('Lintting') {
->>>>>>> 5950003753efe1317fadfd6e887dcccddd7bb3c3
             steps {
                 sh 'hadolint Dockerfile'
             }
@@ -99,23 +87,17 @@ pipeline {
             }
         }
         stage('Remove Unused docker image locally') {
-<<<<<<< HEAD
             when {
                 not {
                     branch 'resource-creation'
                 }
             }
-=======
->>>>>>> 5950003753efe1317fadfd6e887dcccddd7bb3c3
             steps{
                 sh "docker rmi $blueRegistry:$BUILD_NUMBER"
                 sh "docker rmi $greenRegistry:$BUILD_NUMBER"
             }
         }
         
-<<<<<<< HEAD
        
-=======
->>>>>>> 5950003753efe1317fadfd6e887dcccddd7bb3c3
     }
 }
