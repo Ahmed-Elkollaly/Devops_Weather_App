@@ -146,7 +146,8 @@ pipeline {
 						    kubectl apply -f ./blue-controller.json
 					    '''
 				    }
-			    }
+                }
+			}
 		}
 
 		stage('Deploy green container') {
