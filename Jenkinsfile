@@ -104,14 +104,11 @@ pipeline {
                 }
             }
             steps {
-                dir ('./') {
-
-				    withAWS(region:'us-east-2', credentials:'aws-static') {
-					    sh '''
-						    kubectl config get-contexts
-					    '''
-			        }
-                }
+				withAWS(region:'us-east-2', credentials:'aws-static') {
+					sh '''
+						kubectl config get-contexts
+					'''
+			    }
             }
 
 
@@ -123,13 +120,11 @@ pipeline {
                 }
             }
 			steps {
-                dir ('./') {
-				    withAWS(region:'us-east-2', credentials:'aws-static') {
-					    sh  '''
-						    kubectl config use-context arn:aws:eks:us-east-2:549112439880:cluster/weather-cluster
-					    '''
-				    }
-                }
+				withAWS(region:'us-east-2', credentials:'aws-static') {
+					sh '''
+						kubectl config use-context arn:aws:eks:us-east-2:549112439880:cluster/weather-cluster
+					'''
+				}
 			}
 		}
 
@@ -140,13 +135,11 @@ pipeline {
                 }
             }
 			steps {
-                dir ('./') {
-				    withAWS(region:'us-east-2', credentials:'aws-static') {
-					    sh '''
-						    kubectl apply -f ./blue-controller.json
-					    '''
-				    }
-                }
+				withAWS(region:'us-east-2', credentials:'aws-static') {
+					sh '''
+						kubectl apply -f ./blue-controller.json
+					'''
+				}
 			}
 		}
 
