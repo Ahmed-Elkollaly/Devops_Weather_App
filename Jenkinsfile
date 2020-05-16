@@ -122,7 +122,7 @@ pipeline {
 			steps {
 				withAWS(region:'us-east-2', credentials:'aws-static') {
 					sh '''
-						sudo kubectl config use-context arn:aws:eks:us-east-2:549112439880:cluster/weather-cluster
+						kubectl config use-context arn:aws:eks:us-east-2:549112439880:cluster/weather-cluster
 					'''
 				}
 			}
