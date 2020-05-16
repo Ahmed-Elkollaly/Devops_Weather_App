@@ -97,6 +97,70 @@ pipeline {
                 sh "docker rmi $greenRegistry:$BUILD_NUMBER"
             }
         }
+        stage('Set current kubectl context') {
+			steps {
+				withAWS(region:'us-east-2', credentials:'aws-static') {
+					sh '''
+						kubectl config use-context arn:aws:eks:us-east-2:549112439880:cluster/weather-cluster
+					'''
+				}
+			}
+		}
+
+		stage('Deploy blue container') {
+			steps {
+				withAWS(region:'us-east-2', credentials:'aws-static') {
+					sh '''
+						kubectl apply -f ./blue-controller.json
+					'''
+				}
+			}
+		}
+
+		stage('Deploy green container') {
+			steps {
+				withAWS(region:'us-east-2', credentials:'aws-static') {
+					sh '''
+						kubectl apply -f ./green-controller.json
+					'''
+				}
+			}
+		}
+
+		stage('Create the blue service in the cluster') {
+			steps {
+				withAWS(region:'us-east-2', credentials:'aws-static') {
+					sh '''
+						kubectl apply -f ./blue-service.json
+					'''
+				}
+			}
+		}
+
+		stage('Wait user instruction') {
+            steps {
+                input "Redirect traffic to green service?"
+            }
+        }
+
+		stage('Create the green service in the cluster') {
+			steps {
+				withAWS(region:'us-east-2', credentials:'aws-static') {
+					sh '''
+						kubectl apply -f ./green-service.json
+					'''
+				}
+			}
+		}
+        stage('Deployment Details') {
+			steps {
+				withAWS(region:'us-east-2', credentials:'aws-static') {
+					sh '''
+						kubectl get pods
+					'''
+				}
+			}
+		}
         
        
     }
