@@ -1,15 +1,23 @@
 pipeline {
     environment {
-    blueRegistry = "2121994/weather_app_blue"
-    greenRegistry = "2121994/weather_app_green"
-    registryCredential = 'dockerhub'
-    blueDockerImage = ''
-    greenDockerImage = ''
-
+        blueRegistry = "2121994/weather_app_blue"
+        greenRegistry = "2121994/weather_app_green"
+        registryCredential = 'dockerhub'
+        blueDockerImage = ''
+        greenDockerImage = ''
     }
     agent any
     stages {
         
+        stage('Creating Resources') {
+            when {
+                branch 'resource-creation'  
+            }
+            steps {
+                sh 'hadolint Dockerfile'
+            }
+
+        }
         stage('Lintting') {
             steps {
                 sh 'hadolint Dockerfile'
@@ -34,11 +42,12 @@ pipeline {
                 }
             }
         }
-        stage('Remove Unused docker image') {
+        stage('Remove Unused docker image locally') {
             steps{
                 sh "docker rmi $blueRegistry:$BUILD_NUMBER"
                 sh "docker rmi $greenRegistry:$BUILD_NUMBER"
             }
         }
+        stage('')
     }
 }
