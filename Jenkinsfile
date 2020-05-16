@@ -15,7 +15,7 @@ pipeline {
                 branch 'resource-creation'  
             }
             steps {
-                withAWS(region:'us-east-2', credentials:'Aws') {
+                withAWS(region:'us-east-2', credentials:'aws-static') {
 					sh '''
 						eksctl create cluster --name weather-cluster --version 1.13 \
 												--nodegroup-name standard-workers \
@@ -38,7 +38,7 @@ pipeline {
                 branch 'resource-creation'  
             }
             steps {
-				withAWS(region:'us-east-2', credentials:'Aws') {
+				withAWS(region:'us-east-2', credentials:'aws-static') {
 					sh '''
 						aws eks --region us-east-2 update-kubeconfig --name weather-cluster
 					'''
