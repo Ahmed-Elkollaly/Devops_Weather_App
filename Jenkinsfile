@@ -97,7 +97,28 @@ pipeline {
                 sh "docker rmi $greenRegistry:$BUILD_NUMBER"
             }
         }
+        stage('Get current kubectl context') {
+            when {
+                not {
+                    branch 'resource-creation'
+                }
+            }
+            steps {
+				withAWS(region:'us-east-2', credentials:'aws-static') {
+					sh '''
+						kubectl config get-contexts
+					'''
+			    }
+            }
+
+
+        }
         stage('Set current kubectl context') {
+            when {
+                not {
+                    branch 'resource-creation'
+                }
+            }
 			steps {
 				withAWS(region:'us-east-2', credentials:'aws-static') {
 					sh '''
@@ -108,6 +129,11 @@ pipeline {
 		}
 
 		stage('Deploy blue container') {
+            when {
+                not {
+                    branch 'resource-creation'
+                }
+            }
 			steps {
 				withAWS(region:'us-east-2', credentials:'aws-static') {
 					sh '''
@@ -118,6 +144,11 @@ pipeline {
 		}
 
 		stage('Deploy green container') {
+            when {
+                not {
+                    branch 'resource-creation'
+                }
+            }
 			steps {
 				withAWS(region:'us-east-2', credentials:'aws-static') {
 					sh '''
@@ -128,6 +159,11 @@ pipeline {
 		}
 
 		stage('Create the blue service in the cluster') {
+            when {
+                not {
+                    branch 'resource-creation'
+                }
+            }
 			steps {
 				withAWS(region:'us-east-2', credentials:'aws-static') {
 					sh '''
@@ -138,12 +174,22 @@ pipeline {
 		}
 
 		stage('Wait user instruction') {
+            when {
+                not {
+                    branch 'resource-creation'
+                }
+            }
             steps {
                 input "Redirect traffic to green service?"
             }
         }
 
 		stage('Create the green service in the cluster') {
+            when {
+                not {
+                    branch 'resource-creation'
+                }
+            }
 			steps {
 				withAWS(region:'us-east-2', credentials:'aws-static') {
 					sh '''
@@ -153,6 +199,11 @@ pipeline {
 			}
 		}
         stage('Deployment Details') {
+            when {
+                not {
+                    branch 'resource-creation'
+                }
+            }
 			steps {
 				withAWS(region:'us-east-2', credentials:'aws-static') {
 					sh '''
