@@ -48,6 +48,6 @@ pipeline {
                 sh "docker rmi $greenRegistry:$BUILD_NUMBER"
             }
         }
-        stage('')
+        
     }
 }
