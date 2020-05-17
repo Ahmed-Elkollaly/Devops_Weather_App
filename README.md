@@ -35,7 +35,7 @@ Note: `Jenkinsfile` file contains all the details about the pipelines
 
 ### Running Locally using Docker
 
-1. Run the blue Docker version :  `./run_docker_blue.py`
-2. Run the green Docker version :  `./run_docker_green.sh`
+1. Switch to `blue` branch & Run the blue Docker version :  `./run_docker_blue.py`
+2. Switch to `green` branch & Run the green Docker version :  `./run_docker_green.sh`
 
 
